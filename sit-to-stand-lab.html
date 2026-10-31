@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sit-to-Stand Movement Analysis Lab | University of Kentucky Physical Therapy</title>
+<style>
+
+:root{--blue:#0033A0;--dark:#0C2340;--light:#EAF2FF;--ink:#17212b;--muted:#536273;--bg:#f5f7fa;--white:#fff;--ok:#176b3a;--okbg:#e9f7ef;--warn:#8a5700;--warnbg:#fff6df;--border:#d6dde6;--focus:#ffbf47;--note:#f0f7ff;--hover:#f8fbff;--h2:#0C2340;--h3:#0033A0;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--blue:#5b8cff;--dark:#0a1a33;--light:#16263f;--ink:#e6edf5;--muted:#a3b2c4;--bg:#0d1520;--white:#16202d;--ok:#7fdca2;--okbg:#12301f;--warn:#ffd58a;--warnbg:#3a2c10;--border:#2c3b4e;--note:#14233a;--hover:#1b2a3d;--h2:#e6edf5;--h3:#8db0ff}}
+:root[data-theme="dark"]{--blue:#5b8cff;--dark:#0a1a33;--light:#16263f;--ink:#e6edf5;--muted:#a3b2c4;--bg:#0d1520;--white:#16202d;--ok:#7fdca2;--okbg:#12301f;--warn:#ffd58a;--warnbg:#3a2c10;--border:#2c3b4e;--note:#14233a;--hover:#1b2a3d;--h2:#e6edf5;--h3:#8db0ff}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 60px)}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:var(--bg);line-height:1.55}
+.skip{position:absolute;left:-9999px}.skip:focus{left:12px;top:12px;z-index:99;background:var(--white);padding:10px;border:3px solid var(--focus)}
+header{background:#0033A0;color:#fff;padding:30px 20px 26px;border-bottom:8px solid #0C2340}
+.wrap{max-width:1120px;margin:auto}
+.eyebrow{font-weight:700;letter-spacing:.06em;font-size:.85rem}
+h1{font-size:clamp(2rem,4vw,3.1rem);margin:.25rem 0;line-height:1.1}
+header p{margin:.3rem 0;max-width:850px}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--white);border-bottom:1px solid var(--border)}
+.navin{display:flex;gap:6px;overflow:auto;padding:8px 12px}
+nav a{white-space:nowrap;text-decoration:none;color:var(--h2);font-weight:700;padding:9px 12px;border-radius:6px}
+nav a:hover,nav a:focus{background:var(--light);outline:none}
+main{padding:28px 16px 60px}
+section{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:25px;margin:0 0 22px}
+h2{color:var(--h2);font-size:1.6rem;margin-top:0;border-bottom:3px solid var(--blue);padding-bottom:8px}
+h3{color:var(--h3);margin-bottom:.35rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:15px;margin:12px 0}
+.card{border:1px solid var(--border);border-radius:10px;padding:16px}
+.steps{counter-reset:s;list-style:none;padding:0}.steps li{counter-increment:s;position:relative;padding:10px 10px 10px 46px;border-bottom:1px solid var(--border)}.steps li:before{content:counter(s);position:absolute;left:0;top:8px;background:var(--blue);color:#fff;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:700}
+button{font:inherit;cursor:pointer;border:0;border-radius:7px;padding:10px 15px;background:var(--blue);color:#fff;font-weight:700}
+html button{color:#fff}
+:root[data-theme="dark"] button{color:#0a1a33}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) button{color:#0a1a33}}
+button.secondary,button.toggle{background:var(--light);color:var(--h2)!important;border:1px solid var(--border)}
+button.toggle[aria-pressed="true"]{background:var(--blue);color:#fff!important}
+button:hover{filter:brightness(.93)}button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.feedback{margin-top:10px;padding:12px;border-radius:8px;display:none}.feedback.show{display:block}.correct{background:var(--okbg);color:var(--ok)}.incorrect{background:var(--warnbg);color:var(--warn)}
+.choice{display:flex;gap:9px;align-items:flex-start;padding:9px;border:1px solid var(--border);border-radius:7px;margin:7px 0}.choice:hover{background:var(--hover)}
+.q{border-top:1px solid var(--border);padding-top:12px;margin-top:14px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:center}
+.field{width:100%;margin:4px 0;position:relative;background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.field img{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.hl{position:absolute;inset:0;display:none;background:#5b8cffaa;-webkit-mask-size:100% 100%;mask-size:100% 100%}.hl.active{display:block}
+.quad{position:absolute;background:transparent;border-radius:0;padding:0}.quad:hover{background:#5b8cff22;filter:none}
+.fw{width:min(100%,400px);margin:8px auto}.steps.cols{columns:2;column-gap:28px}.steps.cols li{break-inside:avoid}@media(max-width:700px){.steps.cols{columns:1}}.lr{display:flex;justify-content:space-between;gap:8px}
+.qlab{background:var(--white);border:1px solid var(--border);font-size:.95rem}.qlab:hover{background:var(--light)}
+.nas{color:#0033A0!important}.tem{color:#c1121f!important}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .nas{color:#8db0ff!important}:root:not([data-theme="light"]) .tem{color:#ff8a8a!important}}
+:root[data-theme="dark"] .nas{color:#8db0ff!important}:root[data-theme="dark"] .tem{color:#ff8a8a!important}
+.gaze-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:420px;margin:auto}.gaze{min-height:58px}
+.table-scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;margin:10px 0}th,td{border:1px solid var(--border);padding:9px;text-align:left}th{background:var(--light);color:var(--h2)}
+.clinical{background:var(--note);border:1px solid var(--border);padding:13px;border-radius:8px;margin:10px 0}
+.note{background:var(--note);border-left:5px solid var(--blue);padding:12px 15px}
+.checklist label{display:block;padding:8px;border-bottom:1px solid var(--border)}
+.progress{height:12px;background:var(--border);border-radius:99px;overflow:hidden}.bar{height:100%;background:var(--blue);width:0;transition:width .2s}
+.rin{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}.rin figure{margin:0;text-align:center}.rin img{max-width:100%;height:auto;background:#fff;border-radius:10px;padding:6px;border:1px solid var(--border)}.rin figcaption{font-weight:700;margin-top:6px}.rc{display:block;font-weight:400;color:var(--muted)}.rc[hidden]{display:none}
+.qfig{margin:10px 0;text-align:center}.qfig img{max-width:100%;height:auto;border:1px solid var(--border);border-radius:10px;background:#fff}.qfig figcaption{font-size:.93rem;color:var(--muted);margin-top:6px}
+input[type=text]{font:inherit;padding:9px;border:1px solid var(--border);border-radius:7px;background:var(--white);color:var(--ink);min-width:220px;max-width:100%}
+.small{color:var(--muted);font-size:.93rem}
+footer{background:#0C2340;color:#fff;padding:25px 16px}
+@media(max-width:700px){.two{grid-template-columns:1fr}section{padding:18px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+
+.vgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px;margin:12px 0}.vf{margin:0}.vf video{width:100%;border-radius:10px;background:#000}.vf figcaption{margin-top:6px;font-size:.95rem}
+.ctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}
+.pick{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.ideal{border-left:5px solid var(--ok)}.path{border-left:5px solid var(--warn)}
+select{font:inherit;padding:7px;border:1px solid var(--border);border-radius:7px;background:var(--white);color:var(--ink);max-width:100%}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+<header><div class="wrap">
+<div class="eyebrow">University of Kentucky Physical Therapy</div>
+<h1>Sit-to-Stand Movement Analysis Lab</h1>
+<p>Compare typical and pathologic sit-to-stand using movement-analysis constructs, then connect what you see to motor learning, schema theory, and the white matter tracts affected in Henrietta's stroke.</p>
+</div></header>
+<nav aria-label="Lab sections"><div class="navin wrap">
+<a href="#start">Start</a><a href="#case">Case</a><a href="#videos">Videos</a><a href="#constructs">Constructs</a><a href="#ws">Worksheet</a><a href="#ml">Motor learning</a><a href="#sys">Systems</a><a href="#tracts">Tracts</a>
+</div></nav>
+<main id="main" class="wrap">
+
+<section id="start">
+<h2>Before you begin</h2>
+<div class="grid">
+<div class="card"><h3>Goal</h3><p>Describe sit-to-stand with precise movement-analysis language instead of general impressions.</p></div>
+<div class="card"><h3>Method</h3><p>Read the case, watch the comparison videos, explore the 11 constructs, and analyze a patient with myositis in the worksheet.</p></div>
+<div class="card"><h3>Practice</h3><p>Answer every practice question correctly to unlock the completion box at the bottom.</p></div>
+</div>
+<div class="note"><strong>Lab note:</strong> This is an educational activity. Follow your course and clinical-site protocols for guarding, gait belts, and documentation.</div>
+</section>
+
+<section id="case">
+<h2>Patient case: Henrietta</h2>
+<p>Before her stroke, Mrs. Henrietta T., a 54-year-old, lived independently with her husband and adult son. She enjoyed composing and performing songs, gardening, and socializing. She had an ischemic stroke affecting her <strong>left internal capsule</strong>, resulting in <strong>right hemiparesis</strong>. She spent 5 days in the hospital and 2 weeks in an inpatient rehabilitation unit, and she now receives outpatient therapy. She is gradually regaining the ability to stand, walk, and do personal activities of daily living (ADL) such as feeding, grooming, and dressing, but she has not regained her prestroke function.</p>
+<div class="note"><strong>Internal capsule:</strong> a V-shaped band of white matter deep in each cerebral hemisphere, between the thalamus and caudate nucleus on the inside and the lentiform nucleus (putamen and globus pallidus) on the outside. Ascending and descending fibers pass through it between the cerebral cortex and the brainstem and spinal cord, so a small stroke here can affect movement and sensation on the opposite side of the body.</div>
+<div class="clinical" style="margin-top:12px"><strong>Think about:</strong> Which factors support her recovery, and which constrain it? How much is spontaneous recovery, and how much is therapy? How much of what she learns in rehabilitation will she keep at home?</div>
+</section>
+
+<section id="videos">
+<h2>Watch and analyze</h2>
+<p>Use slow speed and replay each clip several times. Focus on one construct at a time. In both clips of Henrietta, a clinician guards her with a gait belt, so consider how that affects what you can say about stability.</p>
+<div class="vgrid">
+<figure class="vf"><video id="v1" controls playsinline preload="metadata" src="videos/typical-sit-to-stand.mp4"></video><figcaption><strong>Typical sit-to-stand</strong> (reference, front and side views)</figcaption></figure>
+<figure class="vf"><video id="v2" controls playsinline preload="metadata" src="videos/henrietta-1-month-post-stroke.mp4"></video><figcaption><strong>Henrietta, 1 month post stroke</strong></figcaption></figure>
+<figure class="vf"><video id="v3" controls playsinline preload="metadata" src="videos/henrietta-later-recovery.mp4"></video><figcaption><strong>Henrietta, later in recovery</strong> (rising from a wheelchair)</figcaption></figure>
+</div>
+<div class="ctl" role="group" aria-label="Playback controls">
+<button onclick="playAll()">Play all together</button><button class="secondary" onclick="pauseAll()">Pause all</button>
+<span class="small">Speed:</span>
+<button class="toggle spd" aria-pressed="false" onclick="setSpeed(.25,this)">0.25×</button><button class="toggle spd" aria-pressed="false" onclick="setSpeed(.5,this)">0.5×</button><button class="toggle spd" aria-pressed="true" onclick="setSpeed(1,this)">1×</button>
+</div>
+</section>
+
+<section id="constructs">
+<h2>The 11 observable constructs</h2>
+<p>Select a construct to see its definition, how it is measured, and what ideal and pathologic sit-to-stand look like.</p>
+<div class="pick" id="cpick" role="group" aria-label="Constructs"></div>
+<div id="cdetail" class="grid" aria-live="polite"></div>
+<h3>Practice questions</h3>
+<p class="small">Choose the construct that best fits each finding.</p>
+<div id="quiz-con"></div>
+</section>
+
+<section id="ws">
+<h2>Observation worksheet: sit-to-stand with myositis</h2>
+<p>Myositis is an inflammatory muscle disease that often weakens the muscles closest to the trunk, such as the hip extensors. Watch this person rise from an armchair, using slow speed and replaying as needed. For each construct, choose the description that best matches what you see. Answer all five correctly to unlock the white matter questions.</p>
+<figure class="vf" style="max-width:360px;margin:12px auto"><video id="v4" controls playsinline preload="metadata" src="videos/myositis-armchair-sit-to-stand.mp4"></video><figcaption><strong>Rising from an armchair with myositis</strong></figcaption></figure>
+<div class="ctl" role="group" aria-label="Playback speed" style="justify-content:center"><span class="small">Speed:</span>
+<button class="toggle spd4" aria-pressed="false" onclick="setSpeed4(.5,this)">0.5×</button><button class="toggle spd4" aria-pressed="true" onclick="setSpeed4(1,this)">1×</button><button class="toggle spd4" aria-pressed="false" onclick="setSpeed4(2,this)">2×</button></div>
+<div id="wsrows"></div>
+<p id="wsStatus" class="clinical" role="status">0 of 5 correct.</p>
+</section>
+
+<section id="ml">
+<h2>Motor learning: performance versus learning</h2>
+<div class="clinical">At the end of her daily session, Henrietta sits and stands symmetrically, with weight evenly distributed on both legs. When she returns the next day, she again stands with all her weight on her noninvolved leg. Later, she begins arriving at therapy already standing more symmetrically.</div>
+<div id="quiz-ml"></div>
+</section>
+
+<section id="sys">
+<h2>Systems that support sit-to-stand</h2>
+<p>Answer these questions about the sensory systems involved in rising from a chair.</p>
+<div id="quiz-sys"></div>
+</section>
+
+<section id="tracts">
+<h2>White matter tracts in Henrietta</h2>
+<div id="trlock" class="note"><strong>Locked.</strong> Answer every item in the observation worksheet correctly to unlock these questions.</div>
+<div id="trbody" hidden>
+<div class="clinical">Henrietta’s stroke affected the left internal capsule and caused right hemiparesis. Use what you know about descending and ascending tracts to answer.</div>
+<div id="quiz-tr"></div>
+</div>
+</section>
+
+<section id="finish" hidden>
+<h2>Lab complete</h2>
+<p>You answered every practice question correctly. Enter your name to show your completion.</p>
+<label for="stuname">Name </label><input id="stuname" type="text" autocomplete="name"> <button onclick="showDone()">Show completion</button>
+<p id="doneMsg" role="status"></p>
+</section>
+</main>
+<footer><div class="wrap"><strong>University of Kentucky Physical Therapy</strong><p class="small" style="color:#dce8f8">Sit-to-Stand Movement Analysis Lab • Educational resource</p></div></footer>
+<script>
+const $=id=>document.getElementById(id);
+/* Videos */
+const VS=['v1','v2','v3'].map($);
+function playAll(){VS.forEach(v=>{v.currentTime=0;v.play().catch(()=>{})})}
+function pauseAll(){VS.forEach(v=>v.pause())}
+function setSpeed(r,b){VS.forEach(v=>v.playbackRate=r);document.querySelectorAll('.spd').forEach(x=>x.setAttribute('aria-pressed',x===b))}
+/* Constructs: [name, definition, measurement, ideal, pathologic] */
+const C=[
+['Symmetry','Perfect agreement of the external kinetics and kinematics of movement (e.g., left vs right).','Symmetry index or ratios','Equal weight-bearing through both legs; even push-off and rise.','Unequal weight shift to one limb; asymmetrical trunk lean or push-off.'],
+['Speed','Rate of change or velocity of segment or body displacement from start to finish of a task.','Speed or movement time','Smooth, continuous rise with steady speed.','Slow, prolonged movement or abrupt, jerky motion.'],
+['Amplitude','The extent or range of movement used to complete a task.','Range of motion','Adequate hip, knee, and ankle flexion during forward lean and extension to stand upright.','Limited hip/knee/ankle flexion or incomplete extension; excessive trunk flexion.'],
+['Alignment','Biomechanical relationship of body segments to one another as well as to the base of support and environment to achieve the task at hand.','Orientation of body segments (anterior/posterior/lateral) with respect to other limb segments or body','Upright posture with trunk aligned over hips and feet shoulder-width apart.','Forward head, rounded shoulders, knees collapsed inward, or feet misaligned.'],
+['Verticality','Ability to orient the body in relation to the line of gravity.','Body segment anterior/posterior/lateral with respect to plumb line','Head, trunk, and pelvis aligned over base of support once standing.','Leaning forward, backward, or to one side after standing.'],
+['Stability','The ability to control the body’s center of mass in relation to the base of support under quasi-static and dynamic conditions.','Sway; center of pressure','Maintains balance without extra steps or hand support.','Loss of balance, need for hand support, or taking multiple corrective steps.'],
+['Smoothness','A movement is perceived to be smooth when it happens in a continual fashion without any interruptions in velocity or trajectory.','Measures derived from kinematic analysis such as acceleration and jerk','Fluid motion with consistent rise and steady control.','Jerky, segmented movement or pauses during transfer.'],
+['Sequencing','Specific order of motor output required to achieve the intended goal of the action.','Joint coordination (kinematic and kinetic analyses)','Proper order: trunk flexion → hip/knee extension → upright posture.','Out-of-order motion (e.g., premature knee extension or delayed trunk flexion).'],
+['Timing','The overall temporal structure of movement, including the relative percentage of time devoted to movement segments (initiation, execution, termination).','Reaction time, relative timing measures','Appropriate initiation and coordinated phase transitions.','Delayed initiation, prolonged or uneven phase timing.'],
+['Accuracy','The closeness of a measured value to a standard or known value; freedom from error.','Spatial or variable errors','Feet placed symmetrically; consistent, targeted chair height.','Inconsistent foot placement or frequent readjustment before standing.'],
+['Symptom provocation','An observation or patient report of symptoms; movement that evokes a particular response.','Change in oxygen saturation, heart rate; patient-reported measures (pain, dizziness, fear)','No symptom provocation; stable vitals.','Pain, dizziness, increased heart rate, or fear of falling during movement.']];
+$('cpick').innerHTML=C.map((c,i)=>`<button class="toggle" aria-pressed="false" onclick="showC(${i},this)">${c[0]}</button>`).join('');
+function showC(i,b){document.querySelectorAll('#cpick button').forEach(x=>x.setAttribute('aria-pressed',x===b));const c=C[i];
+$('cdetail').innerHTML=`<div class="card"><h3>${c[0]}</h3><p>${c[1]}</p><p class="small"><strong>How it is measured:</strong> ${c[2]}</p></div><div class="card ideal"><h3>Ideal sit-to-stand</h3><p>${c[3]}</p></div><div class="card path"><h3>Pathologic sit-to-stand</h3><p>${c[4]}</p></div>`;}
+/* Worksheet */
+const WS=[{"q": "How does she share the work between her left and right sides?", "o": ["She shifts nearly all of her weight onto her left leg", "Relatively symmetric: both arms push on the armrests and both legs share the load", "She pushes with her right arm while her left arm hangs", "She leans her trunk strongly to the right throughout", "She rises through one leg while the other foot leaves the floor"], "a": 1, "w": "Her weakness is bilateral, so she compensates with both arms and both legs. Compare this with Henrietta\u2019s asymmetric weight shift after a stroke affecting one side.", "n": "Symmetry"}, {"q": "How long does the rise take?", "o": ["Fast and abrupt: she is standing in about one second", "Normal speed with a smooth, steady rise", "Fast at first, then slow only at the end", "Very slow and prolonged: many seconds of effortful attempts before she is upright", "Speed cannot be judged from this video"], "a": 3, "w": "Weak hip and knee extensors make the rise slow and prolonged. A typical sit-to-stand takes only a couple of seconds.", "n": "Speed"}, {"q": "How does she control her balance during the rise?", "o": ["She depends on her hands, pushing on the armrests to support her body weight", "She stands with no hand support and no sway", "She takes several corrective steps after she stands", "She loses her balance and someone must catch her", "She uses her hands only at the very start, then stands freely"], "a": 0, "w": "Needing upper-extremity support to keep the center of mass over the base of support is a pathologic stability finding.", "n": "Stability"}, {"q": "What is the order of her movement?", "o": ["Ideal order: forward trunk lean, then hip and knee extension, then upright posture", "Reversed order: she stands fully upright before moving her trunk at all", "Out of order: her arms push and her head tilts back instead of first leaning the trunk forward over her feet", "She rises in one coordinated motion without using her arms", "She steps forward first and then rises"], "a": 2, "w": "The ideal order is trunk flexion, then hip and knee extension, then upright posture. Here, arm and head extension substitute for the forward trunk lean.", "n": "Sequencing"}, {"q": "How would you describe the continuity of her movement?", "o": ["Smooth and continuous, with steady velocity", "Smooth except for one brief pause at the end", "Smooth because she uses her arms", "Smoothness cannot be judged from this video", "Not smooth: repeated attempts, pauses, and effortful starts and stops interrupt the rise"], "a": 4, "w": "Interruptions in velocity and trajectory, such as repeated attempts and pauses, mean low smoothness. It can be quantified with acceleration and jerk.", "n": "Smoothness"}];const WOK={};let unlocked=false;
+function setSpeed4(r,b){$('v4').playbackRate=r;document.querySelectorAll('.spd4').forEach(x=>x.setAttribute('aria-pressed',x===b))}
+$('wsrows').innerHTML=WS.map((x,i)=>`<div class="card" style="margin:10px 0"><label for="ws${i}"><strong>${x.n}.</strong> ${x.q}</label><br><select id="ws${i}" onchange="wsCheck(${i})"><option value="">Choose an answer</option>`+x.o.map((t,j)=>`<option value="${j}">${'ABCDE'[j]}. ${t}</option>`).join('')+`</select><div id="wsfb${i}" class="feedback" role="status"></div></div>`).join('');
+function wsCheck(i){const s=$('ws'+i),b=$('wsfb'+i);WOK[i]=0;b.className='feedback';b.textContent='';
+if(s.value!==''){b.classList.add('show');if(+s.value===WS[i].a){WOK[i]=1;b.classList.add('correct');b.textContent='Correct. '+WS[i].w}else{b.classList.add('incorrect');b.textContent='Not quite. Watch again, slowly, and try another option.'}}
+const k=WS.filter((x,j)=>WOK[j]).length;if(k===WS.length)unlocked=true;
+$('wsStatus').textContent=k+' of '+WS.length+' correct.'+(unlocked?' The white matter questions are unlocked below.':'');
+$('trbody').hidden=!unlocked;$('trlock').hidden=unlocked;}
+/* Quizzes */
+const QZ={"quiz-con": [{"q": "During the rise, Henrietta puts most of her weight through her left leg and pushes off unevenly. Which construct is most affected?", "o": ["Amplitude", "Accuracy", "Symmetry", "Timing", "Smoothness"], "a": 2, "w": "Symmetry is agreement between the left and right sides, such as equal weight-bearing and an even push-off."}, {"q": "She extends her knees before leaning her trunk forward. Which construct is most affected?", "o": ["Sequencing", "Alignment", "Speed", "Verticality", "Accuracy"], "a": 0, "w": "The expected order is trunk flexion, then hip and knee extension, then upright posture. Out-of-order motion is a sequencing problem."}, {"q": "Her rise comes in pauses, with starts and stops rather than one continuous motion. Which construct is most affected?", "o": ["Amplitude", "Stability", "Symmetry", "Alignment", "Smoothness"], "a": 4, "w": "Smoothness is movement without interruptions in velocity or trajectory. It can be quantified with acceleration and jerk."}, {"q": "Once standing, she leans to one side relative to a plumb line. Which construct is most affected?", "o": ["Sequencing", "Verticality", "Speed", "Symmetry", "Symptom provocation"], "a": 1, "w": "Verticality is the ability to orient the body to the line of gravity, judged after standing against a plumb line."}, {"q": "After standing, she needs a hand on the table and takes two corrective steps. Which construct is most affected?", "o": ["Amplitude", "Alignment", "Accuracy", "Stability", "Timing"], "a": 3, "w": "Stability is control of the center of mass over the base of support. Hand support and corrective steps show poor control."}, {"q": "She reports dizziness, and her heart rate rises as she stands. Which construct is most affected?", "o": ["Symptom provocation", "Stability", "Speed", "Verticality", "Accuracy"], "a": 0, "w": "Symptom provocation covers reported or measured responses to movement, such as pain, dizziness, fear, or changes in heart rate and oxygen saturation."}, {"q": "Which pairing of a construct with a way to measure it is correct?", "o": ["Amplitude: acceleration and jerk", "Smoothness: range of motion", "Timing: symmetry index", "Speed: plumb line", "Stability: sway and center of pressure"], "a": 4, "w": "Stability is measured with sway and center of pressure. Amplitude uses range of motion, smoothness uses acceleration and jerk, timing uses reaction and relative timing, and speed uses movement time."}], "quiz-ml": [{"q": "At the end of today\u2019s session Henrietta stands with weight evenly shared, but tomorrow she again puts all her weight on her noninvolved leg. What does this suggest?", "o": ["Learning has occurred", "She has reached full spontaneous recovery", "Her recognition schema is complete", "Performance improved, but learning has not yet occurred", "Therapy has had no effect on performance"], "a": 3, "w": "Better symmetry within a session is a change in performance. Learning is a relatively permanent change in behavior, which would show up as retention on later days."}, {"q": "Over later days she arrives at therapy already standing more symmetrically. What does this suggest?", "o": ["Fatigue is lowering her performance", "Learning, a lasting change in behavior, is occurring", "Only her strength has changed", "Her therapist\u2019s cueing is the only cause", "Nothing can be inferred"], "a": 1, "w": "Keeping the improvement from one day to the next, before that day\u2019s practice, suggests a permanent change in behavior, which is learning."}, {"q": "Which statement best defines motor learning?", "o": ["A temporary improvement seen during practice", "Recovery that occurs without any practice", "A relatively permanent change in behavior resulting from practice or experience", "A change caused by fatigue or warm-up", "An increase in strength after training"], "a": 2, "w": "Learning is relatively permanent, so it is inferred from retention rather than from performance within a single session."}], "quiz-tr": [{"q": "Henrietta has right hemiparesis after a stroke on the left side of the brain. Which descending tract is most directly responsible?", "o": ["Spinothalamic tract", "Dorsal column\u2013medial lemniscus", "Corticospinal tract", "Spinocerebellar tract", "Vestibulospinal tract"], "a": 2, "w": "Corticospinal fibers carry voluntary motor commands from the motor cortex toward the spinal cord, so damage on the left side weakens the right side."}, {"q": "Why does damage to the left corticospinal tract, above the brainstem, cause weakness on the right side?", "o": ["Most fibers cross at the pyramidal decussation in the caudal medulla, below the lesion", "Fibers cross within the cerebral cortex", "Fibers cross in the pons", "Fibers cross at the level of the spinal nerve root", "The tract does not cross"], "a": 0, "w": "The fibers are still uncrossed above the lesion, so the left tract controls the right side after most fibers cross in the caudal medulla."}, {"q": "Position sense from Henrietta\u2019s right leg travels in which ascending pathway?", "o": ["Anterolateral (spinothalamic) system", "Anterior corticospinal tract", "Rubrospinal tract", "Dorsal column\u2013medial lemniscus", "Spinoreticular tract"], "a": 3, "w": "Conscious proprioception and fine touch travel in the dorsal column\u2013medial lemniscus system, which crosses in the medulla and relays through the thalamus to the cortex. Reduced position sense can affect weight shifting in sit-to-stand."}, {"q": "Second-order neurons for pain and temperature from her right leg cross the midline where?", "o": ["In the caudal medulla", "In the spinal cord, near the level of entry", "In the pons", "In the thalamus", "In the internal capsule"], "a": 1, "w": "Spinothalamic fibers cross in the anterior white commissure within a segment or two of entry. The dorsal column\u2013medial lemniscus crosses higher, in the medulla."}], "quiz-sys": [{"q": "Which three systems must be intact for a person to rise safely from a chair?", "o": ["Vestibular, proprioceptive (somatosensory), and visual", "Auditory, olfactory, and gustatory", "Vestibular, auditory, and olfactory", "Visual, gustatory, and proprioceptive", "Olfactory, proprioceptive, and auditory"], "a": 0, "w": "Standing relies on vestibular, proprioceptive, and visual input, which together tell the nervous system where the body is relative to gravity, the support surface, and the environment."}, {"q": "As the head moves forward and upward during the rise, which system detects head position and movement relative to gravity?", "o": ["Proprioceptive system", "Visual system", "Auditory system", "Gustatory system", "Vestibular system"], "a": 4, "w": "The vestibular system senses head acceleration and orientation relative to gravity, which helps control balance as the head moves during the transfer."}, {"q": "After her stroke, Henrietta has reduced awareness of the position of her right leg and how much weight it bears. Which system is most affected?", "o": ["Vestibular system", "Proprioceptive (somatosensory) system", "Visual system", "Auditory system", "Olfactory system"], "a": 1, "w": "Proprioceptors in muscles, joints, and skin report limb position and loading. Losing this input makes weight shifting and symmetry harder to control."}, {"q": "A patient closes her eyes while standing up from a chair. Which two systems must she rely on more heavily?", "o": ["Visual and vestibular systems", "Visual and proprioceptive systems", "Auditory and visual systems", "Vestibular and proprioceptive systems", "Olfactory and vestibular systems"], "a": 3, "w": "Closing the eyes removes visual input, so balance depends more on vestibular and proprioceptive information."}, {"q": "Which system helps her judge the distance to the chair and notice obstacles as she rises and turns?", "o": ["Vestibular system", "Proprioceptive system", "Visual system", "Auditory system", "Olfactory system"], "a": 2, "w": "Vision provides information about the environment, including surfaces, distances, obstacles, and the vertical, and it helps guide accurate foot placement."}]};
+const L='ABCDE';let n=0;const OK={};
+Object.keys(QZ).forEach(id=>{$(id).innerHTML=QZ[id].map((x,i)=>{const g='g'+(n++);
+return `<div class="q"><p><strong>${i+1}.</strong> ${x.q}</p>`+x.o.map((t,j)=>`<label class="choice"><input type="radio" name="${g}" value="${j}"> <span><strong>${L[j]}.</strong> ${t}</span></label>`).join('')+`<button onclick="chk('${g}',${x.a},'${id}',${i})">Check answer</button><div id="${g}fb" class="feedback" role="status"></div></div>`}).join('')});
+function chk(g,a,id,i){const s=document.querySelector('input[name="'+g+'"]:checked'),b=$(g+'fb');b.className='feedback show';
+if(!s){b.classList.add('incorrect');b.textContent='Select an answer first.';return;}
+const w=QZ[id][i].w;
+if(+s.value===a){b.classList.add('correct');b.textContent='Correct. '+w;OK[id+i]=1}
+else{b.classList.add('incorrect');b.textContent='Not quite. The best answer is '+L[a]+'. '+w;OK[id+i]=0}
+$('finish').hidden=!Object.keys(QZ).every(k=>QZ[k].every((x,j)=>OK[k+j]));}
+function showDone(){const nm=$('stuname').value.trim();$('doneMsg').textContent=nm?'Completed by '+nm+' on '+new Date().toLocaleDateString()+'. This message appears only on this page and is not saved or sent anywhere.':'Enter your name first.';}
+</script>
+</body>
+</html>
